@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Urut Berdasarkan Tanggal</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+    
+    * {
+      font-family: 'Inter', sans-serif;
+    }
+    
+    .gradient-bg {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+    
+    .glass-effect {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    
+    .hover-lift {
+      transition: all 0.3s ease;
+    }
+    
+    .hover-lift:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    }
+    
+    .fade-in {
+      animation: fadeIn 0.8s ease-out;
+    }
+    
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    .stagger-animation {
+      animation: fadeInUp 0.6s ease-out;
+    }
+    
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    .header-gradient {
+      background: linear-gradient(90deg, #4f46e5, #7c3aed, #ec4899);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    
+    .table-row:nth-child(even) {
+      background: rgba(248, 250, 252, 0.5);
+    }
+    
+    .table-row:hover {
+      background: rgba(99, 102, 241, 0.05);
+      transform: scale(1.002);
+      transition: all 0.2s ease;
+    }
+    
+    .loading-spinner {
+      animation: spin 1s linear infinite;
+    }
+    
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    
+    .badge {
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: white;
+      padding: 0.25rem 0.75rem;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 500;
+    }
+    
+    .shadow-glow {
+      box-shadow: 0 0 30px rgba(99, 102, 241, 0.3);
+    }
+  </style>
+</head>
+<body class="gradient-bg min-h-screen">
+  <div class="container mx-auto px-4 py-8">
+    <!-- Header Section -->
+    <div class="text-center mb-12 fade-in">
+      <h1 class="text-4xl md:text-5xl font-bold header-gradient mb-4">
+        📝 Tabel Tulisan
+      </h1>
+      <p class="text-white/80 text-lg max-w-2xl mx-auto">
+        Daftar tulisan diurutkan berdasarkan tanggal dari yang lama ke baru
+      </p>
+      <div class="mt-6">
+        <span class="badge shadow-glow">
+          Dibuat dengan ❤️
+        </span>
+      </div>
+    </div>
+
+    <!-- Loading State -->
+    <div id="loading" class="text-center py-12">
+      <div class="loading-spinner w-12 h-12 border-4 border-white/30 border-t-white rounded-full mx-auto mb-4"></div>
+      <p class="text-white/80">Memuat data...</p>
+    </div>
+
+    <!-- Add Message Form -->
+    <div id="add-form" class="glass-effect rounded-2xl shadow-2xl hover-lift overflow-hidden mb-8 fade-in">
+      <div class="bg-gradient-to-r from-green-500 to-emerald-600 p-4 text-white">
+        <div class="flex items-center space-x-2">
+          <span class="text-2xl">✍️</span>
+          <h2 class="text-xl font-bold">Tambahkan Pesan Baru</h2>
+        </div>
+      </div>
+      
+      <div class="p-6">
+        <form id="message-form" class="space-y-4">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label for="nama" class="block text-sm font-semibold text-gray-700 mb-2">
+                👤 Nama
+              </label>
+              <input 
+                type="text" 
+                id="nama" 
+                name="nama" 
+                required
+                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-200"
+                placeholder="Masukkan nama Anda"
+              >
+            </div>
+            
+            <div>
+              <label for="tanggal" class="block text-sm font-semibold text-gray-700 mb-2">
+                📅 Tanggal & Waktu
+              </label>
+              <input 
+                type="datetime-local" 
+                id="tanggal" 
+                name="tanggal" 
+                required
+                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-200"
+              >
+            </div>
+          </div>
+          
+          <div>
+            <label for="pesan" class="block text-sm font-semibold text-gray-700 mb-2">
+              💭 Pesan
+            </label>
+            <textarea 
+              id="pesan" 
+              name="pesan" 
+              rows="4" 
+              required
+              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-200 resize-none"
+              placeholder="Tulis pesan Anda di sini..."
+            ></textarea>
+          </div>
+          
+          <div class="flex justify-end space-x-3">
+            <button 
+              type="button" 
+              onclick="resetForm()"
+              class="px-6 py-3 bg-gray-500 hover:bg-gray-600 text-white rounded-lg transition-all duration-200 flex items-center space-x-2"
+            >
+              <span>🔄</span>
+              <span>Reset</span>
+            </button>
+            <button 
+              type="submit"
+              class="px-6 py-3 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white rounded-lg transition-all duration-200 flex items-center space-x-2 shadow-lg"
+            >
+              <span>💾</span>
+              <span>Simpan Pesan</span>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Main Table Container -->
+    <div id="table-container" class="glass-effect rounded-2xl shadow-2xl hover-lift overflow-hidden" style="display: none;">
+      <!-- Stats Bar -->
+      <div class="bg-gradient-to-r from-indigo-500 to-purple-600 p-4 text-white">
+        <div class="flex flex-wrap items-center justify-between">
+          <div class="flex items-center space-x-4">
+            <div class="flex items-center space-x-2">
+              <span class="text-2xl">📊</span>
+              <span class="font-semibold">Total Tulisan:</span>
+              <span id="total-count" class="bg-white/20 px-3 py-1 rounded-full font-bold">0</span>
+            </div>
+          </div>
+          <div class="text-sm opacity-90">
+            Terakhir diperbarui: <span id="last-updated"></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Table -->
+      <div class="overflow-x-auto">
+        <table class="min-w-full">
+          <thead class="bg-gray-50/80">
+            <tr>
+              <th class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider border-b border-gray-200">
+                <div class="flex items-center space-x-2">
+                  <span>🔢</span>
+                  <span>No</span>
+                </div>
+              </th>
+              <th class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider border-b border-gray-200">
+                <div class="flex items-center space-x-2">
+                  <span>📅</span>
+                  <span>Tanggal & Waktu</span>
+                </div>
+              </th>
+              <th class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider border-b border-gray-200">
+                <div class="flex items-center space-x-2">
+                  <span>👤</span>
+                  <span>Nama</span>
+                </div>
+              </th>
+              <th class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider border-b border-gray-200">
+                <div class="flex items-center space-x-2">
+                  <span>💭</span>
+                  <span>Pesan</span>
+                </div>
+              </th>
+            </tr>
+          </thead>
+          <tbody id="table-body" class="divide-y divide-gray-200/50">
+            <!-- Content will be loaded here -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Error State -->
+    <div id="error-state" class="text-center py-12" style="display: none;">
+      <div class="text-6xl mb-4">😅</div>
+      <h3 class="text-xl font-semibold text-white mb-2">Oops! Terjadi Kesalahan</h3>
+      <p class="text-white/80 mb-4">Tidak dapat memuat data. Pastikan file JSON tersedia.</p>
+      <button onclick="location.reload()" class="bg-white/20 hover:bg-white/30 text-white px-6 py-2 rounded-lg transition-all duration-200">
+        🔄 Coba Lagi
+      </button>
+    </div>
+
+    <!-- Footer -->
+    <div class="text-center mt-12 text-white/60">
+      <p class="text-sm">
+        Dibuat dengan teknologi modern dan desain yang elegan
+      </p>
+    </div>
+  </div>
+
+  <script>
+    // Set current time for last updated
+    document.getElementById('last-updated').textContent = new Date().toLocaleString('id-ID');
+
+    // Global data storage (in memory since localStorage is not supported)
+    let globalData = [];
+
+    function showError() {
+      document.getElementById('loading').style.display = 'none';
+      document.getElementById('error-state').style.display = 'block';
+    }
+
+    function showTable() {
+      document.getElementById('loading').style.display = 'none';
+      document.getElementById('table-container').style.display = 'block';
+    }
+
+    // Sample data for demonstration (replace with actual fetch)
+    const sampleData = [
+      {
+        tanggal_waktu: "15/1/2024 09.30",
+        nama: "Ahmad Rizki",
+        pesan: "Selamat pagi semua! Semoga hari ini menjadi hari yang produktif dan penuh berkah."
+      },
+      {
+        tanggal_waktu: "16/1/2024 14.15",
+        nama: "Siti Nurhaliza",
+        pesan: "Terima kasih atas kerja sama yang baik selama ini. Mari kita terus tingkatkan kualitas pekerjaan kita."
+      },
+      {
+        tanggal_waktu: "17/1/2024 11.45",
+        nama: "Budi Santoso",
+        pesan: "Proposal sudah selesai dibuat dan siap untuk dipresentasikan minggu depan."
+      },
+      {
+        tanggal_waktu: "18/1/2024 16.20",
+        nama: "Dewi Kartika",
+        pesan: "Jangan lupa meeting besok jam 10 pagi di ruang konferensi. Mohon persiapan presentasinya ya!"
+      }
+    ];
+
+    // Set default datetime to current time
+    function setDefaultDateTime() {
+      const now = new Date();
+      const offset = now.getTimezoneOffset() * 60000;
+      const localISOTime = (new Date(now - offset)).toISOString().slice(0, 16);
+      document.getElementById('tanggal').value = localISOTime;
+    }
+
+    // Initialize form with current datetime
+    window.addEventListener('load', () => {
+      setDefaultDateTime();
+    });
+
+    // Form submission handler
+    document.getElementById('message-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const formData = new FormData(e.target);
+      const nama = formData.get('nama').trim();
+      const tanggalInput = formData.get('tanggal');
+      const pesan = formData.get('pesan').trim();
+      
+      if (!nama || !tanggalInput || !pesan) {
+        alert('⚠️ Semua field harus diisi!');
+        return;
+      }
+      
+      // Convert datetime-local to our format
+      const date = new Date(tanggalInput);
+      const tanggal_waktu = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()} ${String(date.getHours()).padStart(2, '0')}.${String(date.getMinutes()).padStart(2, '0')}`;
+      
+      const newEntry = {
+        tanggal_waktu,
+        nama,
+        pesan
+      };
+      
+      // Add to global data
+      globalData.push(newEntry);
+      
+      // Save to JSON (simulate - in real implementation, this would be a server call)
+      saveToJSON();
+      
+      // Refresh table
+      processData(globalData);
+      
+      // Reset form
+      resetForm();
+      
+      // Show success message
+      showSuccessMessage();
+    });
+
+    function resetForm() {
+      document.getElementById('message-form').reset();
+      setDefaultDateTime();
+    }
+
+    function saveToJSON() {
+      // In a real implementation, this would send data to a server to save to the JSON file
+      // For now, we'll just simulate the save and show a message
+      console.log('Data saved to tulisan_structured_table.json:', globalData);
+      
+      // Create downloadable JSON for demonstration
+      const dataStr = JSON.stringify(globalData, null, 2);
+      const dataBlob = new Blob([dataStr], {type: 'application/json'});
+      
+      // You could auto-download the file here if needed:
+      // const url = URL.createObjectURL(dataBlob);
+      // const link = document.createElement('a');
+      // link.href = url;
+      // link.download = 'tulisan_structured_table.json';
+      // link.click();
+    }
+
+    function showSuccessMessage() {
+      // Create and show success notification
+      const notification = document.createElement('div');
+      notification.className = 'fixed top-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg z-50 flex items-center space-x-2';
+      notification.innerHTML = `
+        <span>✅</span>
+        <span>Pesan berhasil ditambahkan!</span>
+      `;
+      
+      document.body.appendChild(notification);
+      
+      // Auto remove after 3 seconds
+      setTimeout(() => {
+        notification.remove();
+      }, 3000);
+    }
+
+    // Simulate loading time
+    setTimeout(() => {
+      try {
+        // Try to fetch actual data first
+        fetch('tulisan_structured_table.json')
+          .then(res => res.json())
+          .then(data => {
+            globalData = data;
+            processData(data);
+          })
+          .catch(() => {
+            // If fetch fails, use sample data
+            globalData = [...sampleData];
+            processData(sampleData);
+          });
+      } catch (error) {
+        // If everything fails, use sample data
+        globalData = [...sampleData];
+        processData(sampleData);
+      }
+    }, 1500);
+
+    function processData(data) {
+      // Parse and sort data by date (oldest to newest)
+      const parseDate = str => {
+        const [tgl, jam] = str.split(' ');
+        const [d, m, y = '2024'] = tgl.split('/');
+        const [h, mn] = jam.replace('.', ':').split(':');
+        return new Date(`${y}-${m.padStart(2, '0')}-${d.padStart(2, '0')}T${h.padStart(2, '0')}:${mn.padStart(2, '0')}:00`);
+      };
+
+      // Sort data from oldest to newest
+      data.sort((a, b) => parseDate(a.tanggal_waktu) - parseDate(b.tanggal_waktu));
+
+      // Update global data with sorted data
+      globalData = [...data];
+
+      // Update total count
+      document.getElementById('total-count').textContent = data.length;
+
+      // Update last updated time
+      document.getElementById('last-updated').textContent = new Date().toLocaleString('id-ID');
+
+      // Populate table
+      const tbody = document.getElementById('table-body');
+      tbody.innerHTML = '';
+
+      data.forEach((item, index) => {
+        const row = document.createElement('tr');
+        row.className = 'table-row stagger-animation';
+        row.style.animationDelay = `${index * 0.1}s`;
+        
+        row.innerHTML = `
+          <td class="px-6 py-4 font-medium text-gray-900">
+            <div class="flex items-center justify-center w-8 h-8 bg-gradient-to-r from-indigo-500 to-purple-600 text-white rounded-full text-sm font-bold">
+              ${index + 1}
+            </div>
+          </td>
+          <td class="px-6 py-4 text-gray-700">
+            <div class="flex flex-col">
+              <span class="font-semibold">${item.tanggal_waktu.split(' ')[0]}</span>
+              <span class="text-sm text-gray-500">${item.tanggal_waktu.split(' ')[1]}</span>
+            </div>
+          </td>
+          <td class="px-6 py-4">
+            <div class="flex items-center space-x-3">
+              <div class="flex-shrink-0 w-10 h-10 bg-gradient-to-r from-pink-500 to-rose-500 rounded-full flex items-center justify-center text-white font-bold">
+                ${item.nama.charAt(0).toUpperCase()}
+              </div>
+              <div class="font-medium text-gray-900">${item.nama}</div>
+            </div>
+          </td>
+          <td class="px-6 py-4">
+            <div class="bg-gray-50 rounded-lg p-3 border-l-4 border-indigo-500">
+              <p class="text-gray-700 whitespace-pre-line leading-relaxed">${item.pesan}</p>
+            </div>
+          </td>
+        `;
+        
+        tbody.appendChild(row);
+      });
+
+      showTable();
+    }
+  </script>
+</body>
+</html>
