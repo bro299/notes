@@ -209,8 +209,28 @@
     }
 
     function loadData() {
+      // Try to fetch data from JSON file first
+      fetch('data.json')
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('File tidak ditemukan');
+          }
+          return response.json();
+        })
+        .then(data => {
+          // Use data from JSON file
+          processLoadedData(data);
+        })
+        .catch(error => {
+          console.log('Menggunakan sample data karena:', error.message);
+          // If fetch fails, use sample data
+          processLoadedData(sampleData);
+        });
+    }
+
+    function processLoadedData(data) {
       // Sort data by date (oldest to newest)
-      allData = [...sampleData].sort((a, b) => {
+      allData = [...data].sort((a, b) => {
         const parseDate = str => {
           const [tgl, jam] = str.split(' ');
           const [d, m, y = '2024'] = tgl.split('/');
@@ -222,6 +242,7 @@
 
       filteredData = [...allData];
       
+      // Hide loading and show data
       setTimeout(() => {
         document.getElementById('loading').style.display = 'none';
         renderData();
