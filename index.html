@@ -6,104 +6,208 @@
   <title>Tabel Tulisan</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap');
+    
     * {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+    
+    .neurbrutal-shadow {
+      box-shadow: 8px 8px 0px #000000;
+    }
+    
+    .neurbrutal-shadow-sm {
+      box-shadow: 4px 4px 0px #000000;
+    }
+    
+    .neurbrutal-border {
+      border: 3px solid #000000;
+    }
+    
+    .neurbrutal-btn {
+      border: 3px solid #000000;
+      box-shadow: 4px 4px 0px #000000;
+      transition: all 0.1s ease;
+    }
+    
+    .neurbrutal-btn:hover {
+      transform: translate(2px, 2px);
+      box-shadow: 2px 2px 0px #000000;
+    }
+    
+    .neurbrutal-btn:active {
+      transform: translate(4px, 4px);
+      box-shadow: 0px 0px 0px #000000;
     }
     
     .search-highlight {
-      background-color: #fef08a;
-      padding: 2px 4px;
-      border-radius: 3px;
+      background-color: #00ff00;
+      color: #000000;
+      padding: 2px 6px;
+      border-radius: 0px;
+      font-weight: 700;
+      border: 2px solid #000000;
+    }
+    
+    .neurbrutal-input {
+      border: 3px solid #000000;
+      box-shadow: 4px 4px 0px #000000;
+      border-radius: 0px;
+    }
+    
+    .neurbrutal-input:focus {
+      outline: none;
+      box-shadow: 6px 6px 0px #000000;
+    }
+    
+    .neurbrutal-card {
+      border: 3px solid #000000;
+      box-shadow: 6px 6px 0px #000000;
+      border-radius: 0px;
+      transition: all 0.1s ease;
+    }
+    
+    .neurbrutal-card:hover {
+      transform: translate(-2px, -2px);
+      box-shadow: 8px 8px 0px #000000;
+    }
+    
+    .neurbrutal-table {
+      border: 3px solid #000000;
+      box-shadow: 8px 8px 0px #000000;
+      border-radius: 0px;
+    }
+    
+    .neurbrutal-header {
+      background: linear-gradient(45deg, #ff00ff, #00ffff);
+      border-bottom: 3px solid #000000;
+    }
+    
+    .neurbrutal-row:nth-child(odd) {
+      background-color: #ffff00;
+    }
+    
+    .neurbrutal-row:nth-child(even) {
+      background-color: #ff69b4;
+    }
+    
+    .neurbrutal-row:hover {
+      background-color: #00ff00 !important;
+      transform: scale(1.01);
+    }
+    
+    .neurbrutal-number {
+      background-color: #000000;
+      color: #ffffff;
+      font-weight: 900;
+      border-radius: 0px;
+      border: 2px solid #ffffff;
+    }
+    
+    .loading-neurbrutal {
+      border: 4px solid #000000;
+      border-top: 4px solid #ff00ff;
+      border-radius: 0px;
+      animation: spin 1s linear infinite;
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+    .neurbrutal-stats {
+      background: linear-gradient(135deg, #00ff00, #ffff00);
+      border: 3px solid #000000;
+      box-shadow: 6px 6px 0px #000000;
     }
   </style>
 </head>
-<body class="bg-gray-50 min-h-screen">
+<body class="bg-white min-h-screen">
   <!-- Header -->
-  <div class="bg-white shadow-sm border-b sticky top-0 z-10">
-    <div class="max-w-4xl mx-auto px-4 py-4">
-      <h1 class="text-2xl font-bold text-gray-900 text-center mb-4">
-        📝 Tabel Tulisan
+  <div class="neurbrutal-header sticky top-0 z-10">
+    <div class="max-w-6xl mx-auto px-6 py-6">
+      <h1 class="text-4xl font-black text-black text-center mb-6 transform -rotate-1">
+        📝 TABEL TULISAN
       </h1>
       
       <!-- Search Bar -->
-      <div class="relative">
+      <div class="relative max-w-2xl mx-auto">
         <input 
           type="text" 
           id="search-input" 
-          placeholder="Cari berdasarkan nama atau pesan..."
-          class="w-full px-4 py-3 pl-10 pr-12 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+          placeholder="CARI BERDASARKAN NAMA ATAU PESAN..."
+          class="neurbrutal-input w-full px-6 py-4 pl-14 pr-16 text-lg font-bold text-black bg-white placeholder-gray-600 uppercase"
         >
-        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-          <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+          <svg class="h-6 w-6 text-black font-bold" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="3">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
           </svg>
         </div>
         <button 
           id="clear-search" 
-          class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600 transition-colors"
+          class="neurbrutal-btn absolute inset-y-0 right-2 top-2 bottom-2 px-4 bg-red-500 text-white font-black text-lg"
           style="display: none;"
         >
-          <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-          </svg>
+          ✕
         </button>
       </div>
       
       <!-- Search Results Info -->
-      <div id="search-info" class="mt-2 text-sm text-gray-600" style="display: none;"></div>
+      <div id="search-info" class="mt-4 text-center text-lg font-bold text-black bg-yellow-400 mx-auto max-w-md px-4 py-2 neurbrutal-border" style="display: none;"></div>
     </div>
   </div>
 
   <!-- Loading -->
-  <div id="loading" class="text-center py-12">
-    <div class="animate-spin w-8 h-8 border-3 border-blue-200 border-t-blue-600 rounded-full mx-auto mb-4"></div>
-    <p class="text-gray-600">Memuat data...</p>
+  <div id="loading" class="text-center py-16">
+    <div class="loading-neurbrutal w-16 h-16 mx-auto mb-6"></div>
+    <p class="text-2xl font-black text-black uppercase">MEMUAT DATA...</p>
   </div>
 
   <!-- Main Content -->
-  <div class="max-w-4xl mx-auto px-4 py-6">
+  <div class="max-w-6xl mx-auto px-6 py-8">
     <!-- Stats -->
-    <div id="stats" class="bg-white rounded-lg shadow-sm p-4 mb-6" style="display: none;">
-      <div class="flex items-center justify-between text-sm text-gray-600">
-        <span>Total: <strong id="total-count" class="text-blue-600">0</strong> tulisan</span>
-        <span id="last-updated"></span>
+    <div id="stats" class="neurbrutal-stats p-6 mb-8 text-center" style="display: none;">
+      <div class="text-xl font-black text-black uppercase">
+        TOTAL: <span id="total-count" class="text-3xl text-red-600">0</span> TULISAN
       </div>
+      <div id="last-updated" class="text-sm font-bold text-black mt-2"></div>
     </div>
 
     <!-- Desktop Table -->
-    <div id="desktop-table" class="hidden md:block bg-white rounded-lg shadow-sm overflow-hidden" style="display: none;">
+    <div id="desktop-table" class="hidden md:block neurbrutal-table bg-white overflow-hidden" style="display: none;">
       <table class="w-full">
-        <thead class="bg-gray-50">
-          <tr>
-            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">No</th>
-            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Tanggal</th>
-            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Nama</th>
-            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Pesan</th>
+        <thead>
+          <tr class="neurbrutal-header">
+            <th class="px-6 py-4 text-left text-lg font-black text-black uppercase">NO</th>
+            <th class="px-6 py-4 text-left text-lg font-black text-black uppercase">TANGGAL</th>
+            <th class="px-6 py-4 text-left text-lg font-black text-black uppercase">NAMA</th>
+            <th class="px-6 py-4 text-left text-lg font-black text-black uppercase">PESAN</th>
           </tr>
         </thead>
-        <tbody id="desktop-tbody" class="divide-y divide-gray-200">
+        <tbody id="desktop-tbody">
         </tbody>
       </table>
     </div>
 
     <!-- Mobile Cards -->
-    <div id="mobile-cards" class="md:hidden space-y-4" style="display: none;">
+    <div id="mobile-cards" class="md:hidden space-y-6" style="display: none;">
     </div>
 
     <!-- No Results -->
-    <div id="no-results" class="text-center py-12" style="display: none;">
-      <div class="text-4xl mb-4">🔍</div>
-      <h3 class="text-lg font-medium text-gray-900 mb-2">Tidak ada hasil</h3>
-      <p class="text-gray-600">Coba kata kunci yang lain</p>
+    <div id="no-results" class="text-center py-16" style="display: none;">
+      <div class="text-8xl mb-6">🔍</div>
+      <h3 class="text-3xl font-black text-black mb-4 uppercase">TIDAK ADA HASIL</h3>
+      <p class="text-xl font-bold text-gray-700 uppercase">COBA KATA KUNCI YANG LAIN</p>
     </div>
 
     <!-- Error State -->
-    <div id="error-state" class="text-center py-12" style="display: none;">
-      <div class="text-4xl mb-4">😅</div>
-      <h3 class="text-lg font-medium text-gray-900 mb-2">Terjadi Kesalahan</h3>
-      <p class="text-gray-600 mb-4">Tidak dapat memuat data</p>
-      <button onclick="location.reload()" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
-        Coba Lagi
+    <div id="error-state" class="text-center py-16" style="display: none;">
+      <div class="text-8xl mb-6">😅</div>
+      <h3 class="text-3xl font-black text-black mb-4 uppercase">TERJADI KESALAHAN</h3>
+      <p class="text-xl font-bold text-gray-700 mb-6 uppercase">TIDAK DAPAT MEMUAT DATA</p>
+      <button onclick="location.reload()" class="neurbrutal-btn bg-red-500 text-white px-8 py-4 text-xl font-black uppercase">
+        COBA LAGI
       </button>
     </div>
   </div>
@@ -160,7 +264,7 @@
         const query = this.value.trim();
         
         if (query) {
-          clearButton.style.display = 'flex';
+          clearButton.style.display = 'block';
           filterData(query);
         } else {
           clearButton.style.display = 'none';
@@ -193,7 +297,7 @@
 
     function showSearchInfo(query, count) {
       const info = document.getElementById('search-info');
-      info.textContent = `Menampilkan ${count} hasil untuk "${query}"`;
+      info.textContent = `MENAMPILKAN ${count} HASIL UNTUK "${query.toUpperCase()}"`;
       info.style.display = 'block';
     }
 
@@ -229,7 +333,7 @@
     }
 
     function processLoadedData(data) {
-      // Sort data by date (oldest to newest)
+      // Sort data by date (NEWEST TO OLDEST)
       allData = [...data].sort((a, b) => {
         const parseDate = str => {
           const [tgl, jam] = str.split(' ');
@@ -237,7 +341,7 @@
           const [h, mn] = jam.replace('.', ':').split(':');
           return new Date(`${y}-${m.padStart(2, '0')}-${d.padStart(2, '0')}T${h.padStart(2, '0')}:${mn.padStart(2, '0')}:00`);
         };
-        return parseDate(a.tanggal_waktu) - parseDate(b.tanggal_waktu);
+        return parseDate(b.tanggal_waktu) - parseDate(a.tanggal_waktu); // b - a untuk terbaru di atas
       });
 
       filteredData = [...allData];
@@ -252,7 +356,7 @@
 
     function showStats() {
       document.getElementById('total-count').textContent = allData.length;
-      document.getElementById('last-updated').textContent = new Date().toLocaleString('id-ID');
+      document.getElementById('last-updated').textContent = `TERAKHIR DIPERBARUI: ${new Date().toLocaleString('id-ID').toUpperCase()}`;
       document.getElementById('stats').style.display = 'block';
     }
 
@@ -286,16 +390,20 @@
       const query = document.getElementById('search-input').value.trim();
       
       tbody.innerHTML = filteredData.map((item, index) => `
-        <tr class="hover:bg-gray-50 transition-colors">
-          <td class="px-4 py-3 text-sm font-medium text-gray-900">${index + 1}</td>
-          <td class="px-4 py-3 text-sm text-gray-600">
-            <div>${item.tanggal_waktu.split(' ')[0]}</div>
-            <div class="text-xs text-gray-400">${item.tanggal_waktu.split(' ')[1]}</div>
+        <tr class="neurbrutal-row transition-all duration-100">
+          <td class="px-6 py-4">
+            <div class="neurbrutal-number w-10 h-10 flex items-center justify-center text-lg">
+              ${index + 1}
+            </div>
           </td>
-          <td class="px-4 py-3 text-sm font-medium text-gray-900">
+          <td class="px-6 py-4 text-black font-bold">
+            <div class="text-lg">${item.tanggal_waktu.split(' ')[0]}</div>
+            <div class="text-sm font-black">${item.tanggal_waktu.split(' ')[1]}</div>
+          </td>
+          <td class="px-6 py-4 text-lg font-black text-black">
             ${highlightText(item.nama, query)}
           </td>
-          <td class="px-4 py-3 text-sm text-gray-600 max-w-md">
+          <td class="px-6 py-4 text-black font-bold max-w-md">
             ${highlightText(item.pesan, query)}
           </td>
         </tr>
@@ -307,22 +415,22 @@
       const query = document.getElementById('search-input').value.trim();
       
       container.innerHTML = filteredData.map((item, index) => `
-        <div class="bg-white rounded-lg shadow-sm p-4">
-          <div class="flex items-center justify-between mb-3">
-            <div class="flex items-center space-x-3">
-              <div class="w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-bold">
+        <div class="neurbrutal-card bg-white p-6">
+          <div class="flex items-center justify-between mb-4">
+            <div class="flex items-center space-x-4">
+              <div class="neurbrutal-number w-12 h-12 flex items-center justify-center text-xl">
                 ${index + 1}
               </div>
-              <div class="font-medium text-gray-900">
+              <div class="text-lg font-black text-black">
                 ${highlightText(item.nama, query)}
               </div>
             </div>
-            <div class="text-right text-sm text-gray-500">
-              <div>${item.tanggal_waktu.split(' ')[0]}</div>
-              <div class="text-xs">${item.tanggal_waktu.split(' ')[1]}</div>
+            <div class="text-right font-bold text-black">
+              <div class="text-lg">${item.tanggal_waktu.split(' ')[0]}</div>
+              <div class="text-sm font-black">${item.tanggal_waktu.split(' ')[1]}</div>
             </div>
           </div>
-          <div class="text-gray-700 leading-relaxed">
+          <div class="text-black font-bold text-lg leading-relaxed">
             ${highlightText(item.pesan, query)}
           </div>
         </div>
